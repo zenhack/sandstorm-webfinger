@@ -1,5 +1,5 @@
 'use strict;'
-document.addEventListener("DOMConetnetLoaded", function(event) {
+document.addEventListener("DOMContentLoaded", function(event) {
 	window.addEventListener("message", function(event) {
 		if (event.data.rpcId !== "0") {
 			return;
@@ -8,7 +8,7 @@ document.addEventListener("DOMConetnetLoaded", function(event) {
 			console.log("ERROR: " + event.data.error);
 			return;
 		}
-		var elt = document.getElementById("offer_iframe");
+		var elt = document.getElementById("offer-iframe");
 		elt.setAttribute("src", event.data.uri);
 	});
 

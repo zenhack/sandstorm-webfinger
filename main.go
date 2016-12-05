@@ -1,8 +1,10 @@
 package main
 
 import (
+	"encoding/json"
 	"golang.org/x/net/context"
 	"html/template"
+	"log"
 	"net/http"
 	"os"
 	"zenhack.net/go/sandstorm/sandstormhttpbridge"
@@ -17,8 +19,10 @@ func init() {
 	indexTpl = template.Must(template.ParseFiles(assetPath + "templates/index.html"))
 }
 
-var db = map[string]string{
-	"acct:alice@example.net": `{"subject": "acct:alice@example.net"}`,
+var db = map[string]Jrd{
+	"acct:alice@example.net": {
+		Subject: "acct:alice@example.net",
+	},
 }
 
 func main() {
@@ -31,7 +35,9 @@ func main() {
 				return
 			}
 			w.Header().Set("Content-Type", "application/jrd+json")
-			w.Write([]byte(ret))
+			enc := json.NewEncoder(w)
+			err := enc.Encode(ret)
+			log.Println(err)
 		})
 	http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
 		indexTpl.Execute(w, struct{}{})
